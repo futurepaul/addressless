@@ -18,7 +18,7 @@ I'd feel better if you only used a testnet node and def be sure to use your invo
 
 ## TODO:
 
-- [ ] get this actually working on vercel (currently only working locally for my own setup, ymmv)
+- [x] get this actually working on vercel: https://addressless.vercel.app/
 - [ ] draw the rest of the owl (implement Lightning Address)
 - [ ] make a tutorial for how to do this
 - [ ] default page could be the tutorial / demo of the functionality
