@@ -1,9 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import QRCode from "qrcode";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import QRGenerator from "../src/QRGenerator";
 
 interface InvoiceRequest {
