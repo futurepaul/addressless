@@ -48,9 +48,9 @@ const Home: NextPage = () => {
         const text = await response.text();
         throw new Error(text);
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      setError(e.message);
+      setError(e.message as string);
       setInvoice("");
     }
   }
@@ -64,7 +64,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1>Let's make an invoice</h1>
+        <h1>Let&apos;s make an invoice</h1>
         <form className={styles.form} onSubmit={generateInvoice}>
           <label>
             Sats
