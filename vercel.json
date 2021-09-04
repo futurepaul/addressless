@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/.well-known/lnurlp/:path*",
+      "destination": "/api/lnurl/"
+    }
+  ]
+}

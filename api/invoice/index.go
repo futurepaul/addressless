@@ -1,4 +1,4 @@
-package handler
+package invoice
 
 import (
 	"encoding/json"
@@ -16,7 +16,7 @@ type InvoiceRequest struct {
     Sats int64 
 }
 
-func invoice(inv InvoiceRequest) (string, error) {
+func makeInvoice(inv InvoiceRequest) (string, error) {
 	host:= os.Getenv("LND_HOST")
 	macaroon:= os.Getenv("LND_MACAROON")
 
@@ -49,7 +49,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bolt11, err := invoice(ir);
+	bolt11, err := makeInvoice(ir);
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
