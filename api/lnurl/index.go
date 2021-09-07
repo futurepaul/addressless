@@ -17,7 +17,17 @@ import (
 )
 
 func makeMetadata() string {
-	var domain = os.Getenv("VERCEL_URL")
+	var vercel_env = os.Getenv("VERCEL_ENV")
+
+	var vercel_domain = os.Getenv("VERCEL_URL")
+	var pretty_domain = os.Getenv("PRETTY_URL")
+	var domain string
+
+	if pretty_domain == "" || vercel_env != "production" {
+		domain = vercel_domain 
+	} else {
+		domain = pretty_domain
+	}
 	
 	metadata, _ := sjson.Set("[]", "0.0", "text/identifier")
 	metadata, _ = sjson.Set(metadata, "0.1", "paul@"+domain)

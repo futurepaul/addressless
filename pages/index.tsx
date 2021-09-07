@@ -3,18 +3,44 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { FormEvent, useState } from "react";
 import QRGenerator from "../src/QRGenerator";
+import { lnurlencode } from "../src/util";
 
 interface InvoiceRequest {
   description: string;
   sats: number;
 }
 
-const Home: NextPage = () => {
+interface PageProps {
+  name: string;
+  prettyUrl: string;
+  lnurl: string;
+}
+
+export async function getStaticProps() {
+  const prettyUrl = process.env.PRETTY_URL || "";
+  const name = process.env.NAME || "";
+  const lnurl = prettyUrl ? lnurlencode(`https://${prettyUrl}/api/lnurl`) : "";
+
+  return {
+    props: {
+      name,
+      prettyUrl,
+      lnurl,
+    },
+  };
+}
+
+const Home: NextPage<PageProps> = ({ name, prettyUrl, lnurl }) => {
   const [invoice, setInvoice] = useState("");
   const [error, setError] = useState("");
 
   const [description, setDescription] = useState<string>("Test description");
   const [sats, setSats] = useState<string>("123");
+
+  const lightningAddress =
+    name === "" || prettyUrl === ""
+      ? "Lightning address vars not set."
+      : `${name}@${prettyUrl}`;
 
   async function generateInvoice(e: FormEvent) {
     e.preventDefault();
@@ -62,37 +88,51 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1>Let&apos;s make an invoice</h1>
-        <form className={styles.form} onSubmit={generateInvoice}>
-          <label>
-            Sats
-            <input
-              type="number"
-              min={1}
-              max={21000000 * 100000000}
-              value={sats}
-              onChange={(e) => setSats(e.target.value)}
-            />
-          </label>
-          <label>
-            Description
-            <input
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </label>
-          <input type="submit" value="Generate" />
-        </form>
-        <div className={styles.invoice}>
-          <code>{invoice}</code>
-          <div className={styles.error}>{error}</div>
-          <div className={styles.qr}>
-            {invoice.length > 1 && !error && (
-              <QRGenerator qrCode={invoice} width={400} />
-            )}
+        <section className={styles.section}>
+          <h2>Lightning Address</h2>
+          <h3>{lightningAddress}</h3>
+        </section>
+        <section className={styles.section}>
+          <h2>Lnurl</h2>
+          {lnurl.length > 1 ? (
+            <QRGenerator qrCode={lnurl} width={400} />
+          ) : (
+            <h3>PRETTY_URL env var not set</h3>
+          )}
+        </section>
+        <section className={styles.section}>
+          <h2>Create Invoice</h2>
+          <form className={styles.form} onSubmit={generateInvoice}>
+            <label>
+              Sats
+              <input
+                type="number"
+                min={1}
+                max={21000000 * 100000000}
+                value={sats}
+                onChange={(e) => setSats(e.target.value)}
+              />
+            </label>
+            <label>
+              Description
+              <input
+                type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </label>
+            <input type="submit" value="Generate" />
+          </form>
+          <div className={styles.invoice}>
+            <code>{invoice}</code>
+            <div className={styles.error}>{error}</div>
+            <div className={styles.qr}>
+              {invoice.length > 1 && !error && (
+                <QRGenerator qrCode={invoice} width={400} />
+              )}
+            </div>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );

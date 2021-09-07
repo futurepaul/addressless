@@ -1,7 +1,8 @@
 .container,
 .main,
 .form,
-.invoice {
+.invoice,
+.section {
   display: flex;
   flex-direction: column;
   align-items: center;
