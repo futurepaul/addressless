@@ -17,9 +17,9 @@ interface PageProps {
 }
 
 export async function getStaticProps() {
-  const prettyUrl = process.env.PRETTY_URL || "";
-  const name = process.env.NAME || "";
-  const lnurl = prettyUrl ? lnurlencode(`https://${prettyUrl}/api/lnurl`) : "";
+  const prettyUrl = process.env.ADDRESSLESS_DOMAIN || "";
+  const name = process.env.ADDRESSLESS_NAME || "";
+  const lnurl = prettyUrl ? lnurlencode(`https://${prettyUrl}/api/lnurlp`) : "";
 
   return {
     props: {

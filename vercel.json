@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/.well-known/lnurlp/paul",
-      "destination": "/api/lnurl"
+      "destination": "/api/lnurlp"
     }
   ]
 }

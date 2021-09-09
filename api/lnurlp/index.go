@@ -3,6 +3,7 @@ package lnurl
 // I'm doing separate folders for each "package" because vercel gets mad about sibling files
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -18,9 +19,11 @@ import (
 
 func makeMetadata() string {
 	var vercel_env = os.Getenv("VERCEL_ENV")
-
 	var vercel_domain = os.Getenv("VERCEL_URL")
-	var pretty_domain = os.Getenv("PRETTY_URL")
+
+	var pretty_domain = os.Getenv("ADDRESSLESS_DOMAIN")
+	var name = os.Getenv("ADDRESSLESS_NAME")
+
 	var domain string
 
 	if pretty_domain == "" || vercel_env != "production" {
@@ -30,21 +33,19 @@ func makeMetadata() string {
 	}
 	
 	metadata, _ := sjson.Set("[]", "0.0", "text/identifier")
-	metadata, _ = sjson.Set(metadata, "0.1", "paul@"+domain)
+	metadata, _ = sjson.Set(metadata, "0.1", name+"@"+domain)
 
 	metadata, _ = sjson.Set(metadata, "1.0", "text/plain")
-	metadata, _ = sjson.Set(metadata, "1.1", "Satoshis to paul@"+domain)
+	metadata, _ = sjson.Set(metadata, "1.1", "Satoshis to "+name+"@"+domain)
 
 	return metadata
 }
 
 type InvoiceRequest struct {
-	Description string
     MSats int64 
 }
 
 func getUrl() string {
-	// TODO make this less Vercel specific 
 	vercel_url := os.Getenv("VERCEL_URL")
 	vercel_env := os.Getenv("VERCEL_ENV")
 	
@@ -66,7 +67,10 @@ func makeInvoice(inv InvoiceRequest) (string, error) {
 		return "", errors.New("Something is wrong with the credentials.") 
 	}
 
-	desc := inv.Description
+	// make the lnurlpay description_hash
+	description_hash := sha256.Sum256([]byte(makeMetadata()))
+
+
 
 	return makeinvoice.MakeInvoice(makeinvoice.Params{
 		Msatoshi: inv.MSats,
@@ -74,7 +78,7 @@ func makeInvoice(inv InvoiceRequest) (string, error) {
 			Host: host,
 			Macaroon: macaroon,
 		},
-		Description: desc,
+		DescriptionHash: description_hash[:],
 		// TODO: what should this label be?
 		Label: strconv.FormatInt(time.Now().Unix(), 16),
 	})
@@ -90,7 +94,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 		json.NewEncoder(w).Encode(lnurl.LNURLPayResponse1{
 			LNURLResponse:   lnurl.LNURLResponse{Status: "OK"},
-			Callback:        fmt.Sprintf("%s/.well-known/lnurlp/%s", getUrl(), "paul"),
+			Callback:        fmt.Sprintf("%s/api/lnurlp", getUrl()),
 			MinSendable:     1000,
 			MaxSendable:     100000000,
 			EncodedMetadata: makeMetadata(),
@@ -105,7 +109,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		bolt11, err := makeInvoice(InvoiceRequest{MSats: int64(msat), Description: "Testing 123"})
+		bolt11, err := makeInvoice(InvoiceRequest{MSats: int64(msat)})
 		if err != nil {
 			json.NewEncoder(w).Encode(
 				lnurl.ErrorResponse("failed to create invoice: " + err.Error()))
