@@ -12,10 +12,10 @@ Follow the instructions.
 
 When it asks you for your environment variables, here's what it needs:
 
-`ADDRESSLESS_DOMAIN` = the domain part of your Lightning Address (my_name@**example.com**)
-`ADDRESSLESS_NAME` = the name part (**my_name**@example.com)
-`LND_HOST` = the url and REST port your LND node can be found at (https://my-node-123.voltageapp.io:8080)
-`LND_MACAROON` = your node's invoice macaroon (abc123)
+- `ADDRESSLESS_DOMAIN` = the domain part of your Lightning Address (my_name@**example.com**)
+- `ADDRESSLESS_NAME` = the name part (**my_name**@example.com)
+- `LND_HOST` = the url and REST port your LND node can be found at (https://my-node-123.voltageapp.io:8080)
+- `LND_MACAROON` = your node's invoice macaroon (abc123)
 
 ## Testing Locally
 
