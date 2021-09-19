@@ -8,6 +8,8 @@ The workflow should be: click the "Deploy" button, follow the instructions over 
 
 Click this deploy button:
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffuturepaul%2Faddressless&env=ADDRESSLESS_DOMAIN,ADDRESSLESS_NAME,LND_HOST,LND_MACAROON&envDescription=Env%20vars%20are%20described%20in%20the%20readme&envLink=https%3A%2F%2Fgithub.com%2Ffuturepaul%2Faddressless%2Fblob%2Fmaster%2FREADME.md%23deploying-to-vercel&demo-title=Addressless%20Demo&demo-description=What%20this%20deploy%20looks%20like&demo-url=https%3A%2F%2Faddressless.vercel.app%2F)
+
 Follow the instructions.
 
 When it asks you for your environment variables, here's what it needs:
@@ -15,7 +17,7 @@ When it asks you for your environment variables, here's what it needs:
 - `ADDRESSLESS_DOMAIN` = the domain part of your Lightning Address (my_name@**example.com**)
 - `ADDRESSLESS_NAME` = the name part (**my_name**@example.com)
 - `LND_HOST` = the url and REST port your LND node can be found at (https://my-node-123.voltageapp.io:8080)
-- `LND_MACAROON` = your node's invoice macaroon (abc123)
+- `LND_MACAROON` = your node's invoice macaroon (abc123...)
 
 ## Testing Locally
 
