@@ -1,7 +1,11 @@
 {
   "rewrites": [
     {
-      "source": "/.well-known/lnurlp/paul",
+      "source": "/.well-known/lnurlp/:path",
+      "destination": "/api/lnurlp"
+    },
+    {
+      "source": "/.well-known/lnurlp",
       "destination": "/api/lnurlp"
     }
   ]
