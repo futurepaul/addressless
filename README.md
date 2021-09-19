@@ -14,10 +14,18 @@ Follow the instructions.
 
 When it asks you for your environment variables, here's what it needs:
 
-- `ADDRESSLESS_DOMAIN` = the domain part of your Lightning Address (my_name@**example.com**)
+- `ADDRESSLESS_DOMAIN` = the domain part of your Lightning Address (my_name@**example.com**... if you don't have a domain you may be able to use `your-project-name.vercel.app` if it's not taken)
 - `ADDRESSLESS_NAME` = the name part (**my_name**@example.com)
-- `LND_HOST` = the url and REST port your LND node can be found at (https://my-node-123.voltageapp.io:8080)
+- `LND_HOST` = the url and REST port your LND node can be found at (https://my-node-123.voltageapp.io:8080) RIGHT NOW TOR DOESN'T WORK [WHICH SUCKS SUGGESTIONS WELCOME](https://github.com/futurepaul/addressless/issues/1) 
 - `LND_MACAROON` = your node's invoice macaroon (abc123...)
+
+If you need to change any of these environment variables later, go to your project on Vercel -> Settings -> Environment Variables. You can also go there to customize different variables for different environments (production, preview, development)
+
+To use a custom domain name go to Settings -> Domains and add your desired domain.
+
+If you have a non-Vercel website and don't want to replace it I think you should be fine with a couple redirects:
+- `your-domain.com/.well-known/lnurlp/<name>` -> `your-vercel-address.com/.well-known/lnurlp/<name>`
+- `your-domain.com/api/lnurlp` -> `your-vercel-address.com/api/lnurlp`
 
 ## Testing Locally
 
@@ -36,5 +44,8 @@ I'd feel better if you only used a testnet node and def be sure to use your invo
 
 - [x] get this actually working on vercel: https://addressless.vercel.app/
 - [x] draw the rest of the owl (implement Lightning Address)
-- [ ] make a tutorial for how to do this
-- [ ] default page could be the tutorial / demo of the functionality
+- [x] make a tutorial for how to do this
+- [x] default page is a demo of the functionality
+- [ ] support tor
+- [ ] tutorial for deploying 
+- [ ] support multiple names as aliases
